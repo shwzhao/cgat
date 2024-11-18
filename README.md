@@ -6,6 +6,7 @@ CGAT (Comparative Genomics Analysis Toolkit)
 ## 2. Installation
 ```
 git clone https://github.com/shwzhao/cgat
+export PATH=$PATH:$PWD/cgat/bin
 ```
 
 ## 3. Usage
@@ -97,7 +98,7 @@ options:
                         Do not change transcript name to gene name.
 ```
 
-If there is no matched names in `id_mapping.txt`, you can change the id_mapping.txt column or fasta sequence name to fit.
+If there is no matched names in `id_mapping.txt`, you can change the `id_mapping.txt` column or fasta sequence name to fit.
 ```
 zcat example/GCF_000002775.5_P.trichocarpa_v4.1_protein.faa.gz | grep ">" | head -3
 ## >NP_001391697.1 caffeoyl-CoA O-methyltransferase 1 [Populus trichocarpa]
