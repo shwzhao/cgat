@@ -48,7 +48,8 @@ options:
 
 
 ```
-cgat gff2idmap -g example/GCF_000002775.5_P.trichocarpa_v4.1_genomic.gff.gz
+cgat gff2idmap \
+  -g example/GCF_000002775.5_P.trichocarpa_v4.1_genomic.gff.gz
 
 head -5 id_mapping.txt
 ## #gene_id        gene_name       transcript_id   transcript_name cds_id  SeqID   Start   End     Strand
@@ -60,7 +61,9 @@ head -5 id_mapping.txt
 
 You can also output extra information you want:
 ```
-cgat gff2idmap -g example/GCF_000002775.5_P.trichocarpa_v4.1_genomic.gff.gz -e "gene::Dbxref;mRNA::experiment"
+cgat gff2idmap \
+  -g example/GCF_000002775.5_P.trichocarpa_v4.1_genomic.gff.gz \
+  -e "gene::Dbxref;mRNA::experiment"
 head -5 id_mapping.txt 
 ## #gene_id        gene_name       transcript_id   transcript_name cds_id  SeqID   Start   End     Strand  gene::Dbxref    mRNA::experiment
 ## gene-LOC7483226 LOC7483226      rna-XM_002299051.3      XM_002299051.3  cds-XP_002299087.1      NC_037285.2     40829   43223   -       GeneID:7483226  COORDINATES: polyA evidence [ECO:0006239]
@@ -71,7 +74,8 @@ head -5 id_mapping.txt
 
 ### longestSeq
 
-Using the id_mapping file to generate gene sequence file that there are only longest isoform. You can also change the gene name.
+Use the `id_mapping.txt` file to generate a gene sequence file containing only the longest isoform for each gene. Additionally, you can customize the gene names as needed.
+
 ```
 cgat longestSeq -h
 usage: main.py longestSeq [-h] -i IDMAPPING_FILE -s TRANSCRIPT_FILE [-o OUTPUT_FILE] [-l LENGTH_FILE]
@@ -93,7 +97,7 @@ options:
                         Do not change transcript name to gene name.
 ```
 
-If there no matched names in id_mapping.txt, you can change the id_mapping.txt column or fasta sequence name to fit.
+If there is no matched names in `id_mapping.txt`, you can change the id_mapping.txt column or fasta sequence name to fit.
 ```
 zcat example/GCF_000002775.5_P.trichocarpa_v4.1_protein.faa.gz | grep ">" | head -3
 ## >NP_001391697.1 caffeoyl-CoA O-methyltransferase 1 [Populus trichocarpa]
