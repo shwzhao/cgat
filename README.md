@@ -10,7 +10,21 @@ git clone https://github.com/shwzhao/cgat
 
 ## 3. Usage
 ```
+cgat -h
+usage: main.py [-h] {gff2idmap,longestSeq,taxonomy,orthofinder,renamegff} ...
 
+Comparative genomics analysis toolkit
+
+options:
+  -h, --help            show this help message and exit
+
+subcommands:
+  {gff2idmap,longestSeq,taxonomy,orthofinder,renamegff}
+    gff2idmap           id map help
+    longestSeq          get longest transcript help
+    taxonomy            get species taxonomy
+    orthofinder         orthofinder help
+    renamegff           rename gff file
 ```
 
 ### gff2idmap
@@ -79,13 +93,12 @@ options:
                         Do not change transcript name to gene name.
 ```
 
+If there no matched names in id_mapping.txt, you can change the id_mapping.txt column or fasta sequence name to fit.
 ```
 zcat example/GCF_000002775.5_P.trichocarpa_v4.1_protein.faa.gz | grep ">" | head -3
 ## >NP_001391697.1 caffeoyl-CoA O-methyltransferase 1 [Populus trichocarpa]
 ## >NP_001391698.1 caffeoyl-CoA O-methyltransferase 2 [Populus trichocarpa]
 ## >XP_002297609.3 L-ascorbate oxidase homolog [Populus trichocarpa]
-
-# There no matched names in id_mapping.txt, you can change the id_mapping.txt column or fasta sequence name to fit.
 
 awk 'BEGIN{OFS="\t"}{gsub(/cds-/, "", $5);print}' id_mapping.txt \
   | cgat longestSeq \
