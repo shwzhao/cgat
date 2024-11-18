@@ -1,0 +1,7 @@
+#!/bin/bash
+
+SCRIPT_DIR=$(dirname "$(realpath "$0")")
+CGAT_PATH="$SCRIPT_DIR/../main.py"
+
+python "$CGAT_PATH" "$@"
+

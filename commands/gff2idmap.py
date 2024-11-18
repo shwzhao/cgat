@@ -13,7 +13,7 @@ def parse_extra_columns(extra_columns_str):
         if key not in column_mapping:
              column_mapping[key] = []
         column_mapping[key].append(value)
-    return column_mapping
+    return extra_columns, column_mapping
 
 
 def parse_gff(gff_file, mRNA_Type = 'mRNA', extra_columns = ''):
@@ -22,11 +22,13 @@ def parse_gff(gff_file, mRNA_Type = 'mRNA', extra_columns = ''):
     cds_id_mapping = {}
 
     if not extra_columns:
+        extra_columns = ''
         extra_columns_mapping = {}
     else:
-        extra_columns_mapping = parse_extra_columns(extra_columns)
+        extra_columns, extra_columns_mapping = parse_extra_columns(extra_columns)
 
-    with open(gff_file, 'r') as f:
+    from commands.read_data import open_file
+    with open_file(gff_file) as f:
         for line in f:
             fields = line.strip().strip('\r;').split('\t')
             if line.startswith('#'):
@@ -82,30 +84,40 @@ def parse_gff(gff_file, mRNA_Type = 'mRNA', extra_columns = ''):
 
             else:
                 continue
-    return gene_id_mapping, mrna_id_mapping, cds_id_mapping
+    return gene_id_mapping, mrna_id_mapping, cds_id_mapping, extra_columns
 
-def write_idmapping_file(gene_id_mapping, mrna_id_mapping, cds_id_mapping, output_file):
+def write_idmapping_file(gene_id_mapping, mrna_id_mapping, cds_id_mapping, extra_columns, output_file):
     with open(output_file, 'w') as f:
         # f.write("#GeneID\tGeneName\n")
+        keys_to_output_first = ['gene_id', 'gene_name', 'transcript_id', 'transcript_name', "cds_id", 'SeqID', 'Start', 'End', 'Strand']
+        if extra_columns:
+            header_line = '#' + '\t'.join(keys_to_output_first + extra_columns)
+        else:
+            header_line = '#' + '\t'.join(keys_to_output_first)
+        f.write(f"{header_line}\n")
         for rna_id, rna_attr_dict in mrna_id_mapping.items():
             gene_id = rna_attr_dict['gene_id']
-            rna_attr_dict.update(gene_id_mapping[gene_id])
+            try:
+                rna_attr_dict.update(gene_id_mapping[gene_id])
+            except KeyError:
+                print(f"Warning: {gene_id} not found in gene_id_mapping. Skipping update.")
             rna_attr_dict["cds_id"] = cds_id_mapping.get(rna_id, None)
 
-            keys_to_output_first = ['gene_id', 'gene_name', 'transcript_id', 'transcript_name', "cds_id", 'SeqID', 'Start', 'End', 'Strand']
-            output_line = '\t'.join(str(rna_attr_dict[key]) for key in keys_to_output_first)
-            output_line += '\t' + '\t'.join(str(value) for key, value in rna_attr_dict.items() if key not in keys_to_output_first)
+            output_line = '\t'.join(str(rna_attr_dict.get(key, None)) for key in keys_to_output_first)
+            output_line += '\t' + '\t'.join(str(value) for key, value in reversed(rna_attr_dict.items()) if key not in keys_to_output_first)
             # print(rna_attr_dict)
+            
             f.write(f"{output_line}\n")
 
 def setup_parser(parser):
     idmap_parser = parser.add_parser('gff2idmap', help='id map help')
     # Add command 1 specific arguments
     idmap_parser.add_argument('-g', '--gff_file', required=True, help='Path to gff file')
-    idmap_parser.add_argument('-o', '--output_file', default='id_mapping.txt', help='Path to the output file. | Default: id_mapping.txt')
+    idmap_parser.add_argument('-o', '--output_file', default='id_mapping.txt', help='Path to the output file. [id_mapping.txt]')
+    idmap_parser.add_argument('-t', '--trans_mRNA_info_to', default='mRNA', help='Transcript or mRNA. [mRNA]')
+    idmap_parser.add_argument('-e', '--extra_info', help='Extra information that you need, for example: -e "mRNA::Dbxref;gene::gbkey". [NULL]')
     idmap_parser.add_argument('--only_coding_gene', action='store_true', help='only map pep coding gene ID')
-    idmap_parser.add_argument('-t', '--trans_mRNA_info_to', default='mRNA', help='Transcript or mRNA. | Default: mRNA')
-    idmap_parser.add_argument('-e', '--extra_info', help='Extra information you need')
+
     return idmap_parser
     '''
     如果-e有除了gene和mRNA的情况, 需要同时改变-t参数, 如果改变了-t参数, 就不能再得到mRNA的其他信息
@@ -113,5 +125,5 @@ def setup_parser(parser):
 
 def run(args):
     # Implement functionality for command 1
-    gene_id_mapping, mrna_id_mapping, cds_id_mapping = parse_gff(args.gff_file, mRNA_Type = args.trans_mRNA_info_to, extra_columns=args.extra_info)
-    write_idmapping_file(gene_id_mapping, mrna_id_mapping, cds_id_mapping, args.output_file)
+    gene_id_mapping, mrna_id_mapping, cds_id_mapping, extra_columns = parse_gff(args.gff_file, mRNA_Type = args.trans_mRNA_info_to, extra_columns=args.extra_info)
+    write_idmapping_file(gene_id_mapping, mrna_id_mapping, cds_id_mapping, extra_columns, args.output_file)

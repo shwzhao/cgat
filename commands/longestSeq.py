@@ -5,7 +5,9 @@ def read_gene_transcript_mapping(mapping_file, map_column = 2):
     从基因名和转录本名的对应关系文件中读取基因名和转录本名的对应关系。
     """
     gene_transcripts = {}
-    with open(mapping_file, 'r') as f:
+    from commands.read_data import open_file
+    with open_file(mapping_file) as f:
+    # with open(mapping_file, 'r') as f:
         for line in f:
             name_list = line.strip().split('\t')
             gene_name, transcript_name = name_list[0], name_list[map_column-1]
@@ -19,7 +21,9 @@ def read_transcript_sequences(transcript_file):
     从转录本序列文件中读取转录本序列，并返回转录本名和序列的对应关系。
     """
     transcript_sequences = {}
-    with open(transcript_file, 'r') as f:
+    from commands.read_data import open_file
+    with open_file(transcript_file) as f:
+    # with open(transcript_file, 'r') as f:
         for record in SeqIO.parse(f, 'fasta'):
             transcript_name = record.id
             sequence = str(record.seq)
