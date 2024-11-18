@@ -1,5 +1,3 @@
-from Bio import SeqIO
-
 def read_gene_transcript_mapping(mapping_file, map_column = 2):
     """
     从基因名和转录本名的对应关系文件中读取基因名和转录本名的对应关系。
@@ -20,6 +18,7 @@ def read_transcript_sequences(transcript_file):
     """
     从转录本序列文件中读取转录本序列，并返回转录本名和序列的对应关系。
     """
+    from Bio import SeqIO
     transcript_sequences = {}
     from commands.read_data import open_file
     with open_file(transcript_file) as f:
