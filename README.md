@@ -117,5 +117,21 @@ grep ">" pep.faa | head -3
 ## >gene-LOC7457680
 ## >gene-LOC7483220
 ```
+### fasta2agp
+[agp](https://www.ncbi.nlm.nih.gov/genbank/genome_agp_specification/)
 
+```
+echo ">chr01
+AAAAATTTTTTTTTCCCCCCCCCGGGGGGGGGNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNATCAAAAATTTCCC
+>chr02
+acatcattacattacattnnnnnnnnnnnnnnncattttttaaaaaaaaaccccccatat" > a.fa
+
+cgat fa2agp -i a.fa 
+chr01   1       32      1       W       contig_1        1       32      +
+chr01   33      62      2       U       30      scaffold        yes     proximity_ligation
+chr01   63      76      2       W       contig_2        1       14      +
+chr02   1       18      1       W       contig_1        1       18      +
+chr02   19      33      2       U       15      scaffold        yes     proximity_ligation
+chr02   34      60      2       W       contig_2        1       27      +
+```
 

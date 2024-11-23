@@ -1,3 +1,4 @@
+
 def read_gene_transcript_mapping(mapping_file, map_column = 2):
     """
     从基因名和转录本名的对应关系文件中读取基因名和转录本名的对应关系。
@@ -64,14 +65,14 @@ def write_longest_transcript_sequences(longest_transcripts, output_file):
             f.write(f'>{gene_name}\n{sequence}\n')
 
 def setup_parser(parser):
-    longestSeq_parser = parser.add_parser('longestSeq', help='get longest transcript help')
+    longestSeq_parser = parser.add_parser('longestSeq', help='Get longest isoform according to ID_MAP and FASTA (cds/pep) files')
     # Add command specific arguments
     longestSeq_parser.add_argument('-i', '--idmapping_file', required=True, help='Path to the gene-transcript mapping file')
     longestSeq_parser.add_argument('-s', '--transcript_file', required=True, help='Path to the transcript sequences file')
-    longestSeq_parser.add_argument('-o', '--output_file', default='output.fa', help='Path to the output file. | Default: output.fa')
-    longestSeq_parser.add_argument('-l', '--length_file', help='Path to the output transcript length file')
-    longestSeq_parser.add_argument('-n', '--number',  type=int, default=2, help='Which column you want to map. | Default: 2')
-    longestSeq_parser.add_argument('-d', '--not_change_name', action='store_true', help='Do not change transcript name to gene name.')
+    longestSeq_parser.add_argument('-o', '--output_file', default='output.fa', help='Path to the output file. [output.fa]')
+    longestSeq_parser.add_argument('-l', '--length_file', help='Path to the output transcript length file. [False]')
+    longestSeq_parser.add_argument('-n', '--number',  type=int, default=2, help='Which column you want to map. [2]')
+    longestSeq_parser.add_argument('-d', '--not_change_name', action='store_true', help='Do not change transcript name to gene name. [False]')
 
     return longestSeq_parser
 

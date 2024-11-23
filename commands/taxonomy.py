@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-from Bio import Entrez
 
 def get_phylo(species_names):
+    from Bio import Entrez
     try:
         Entrez.email = "shwzhao997@gmail.com"
         results = {}
@@ -37,7 +37,7 @@ def get_rank_scientific_names(results):
 
 
 def setup_parser(parser):
-    taxonomy_parser = parser.add_parser('taxonomy', help='get species taxonomy')
+    taxonomy_parser = parser.add_parser('taxonomy', help='Get species taxonomy')
     # Add command specific arguments
     taxonomy_parser.add_argument('-n', '--species_name', help='Species name. | For example: "Arabidopsis thaliana"')
     taxonomy_parser.add_argument('-f', '--species_file', help='File with Species names')

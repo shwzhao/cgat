@@ -45,3 +45,25 @@ def open_file_process(filename, process_func, mode='rt', *args, **kwargs):
             for line in file:
                 process_func(line, *args, **kwargs)
 
+
+def write_output(content, filename=None):
+    """
+    将内容写入文件或输出到标准输出。
+    
+    参数:
+    - content: 要写入的内容（字符串或列表，每一项是文件的一行）。
+    - filename: 文件名。如果为 None，则输出到标准输出。
+    """
+    if filename:
+        with open(filename, 'w') as file:
+            file.writelines(content if isinstance(content, list) else [content])
+        print(f"内容已写入文件: {filename}")
+    else:
+        # 如果 filename 为 None，输出到标准输出
+        if isinstance(content, list):
+            for line in content:
+                print(line, end='')  # 避免多余换行
+        else:
+            print(content)
+
+

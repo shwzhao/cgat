@@ -110,8 +110,8 @@ def write_idmapping_file(gene_id_mapping, mrna_id_mapping, cds_id_mapping, extra
             f.write(f"{output_line}\n")
 
 def setup_parser(parser):
-    idmap_parser = parser.add_parser('gff2idmap', help='id map help')
-    # Add command 1 specific arguments
+    idmap_parser = parser.add_parser('gff2idmap', help='Convert GFF file to ID_MAP format')
+    
     idmap_parser.add_argument('-g', '--gff_file', required=True, help='Path to gff file')
     idmap_parser.add_argument('-o', '--output_file', default='id_mapping.txt', help='Path to the output file. [id_mapping.txt]')
     idmap_parser.add_argument('-t', '--trans_mRNA_info_to', default='mRNA', help='Transcript or mRNA. [mRNA]')

@@ -65,12 +65,13 @@ def update_gff(input_gff, rename_file, output_gff=None):
             out_f.close()
 
 def setup_parser(parser):
-    renamegff_parser = parser.add_parser('renamegff', help='rename gff file')
-    # Add command 1 specific arguments
-    renamegff_parser.add_argument('-g', '--input_gff', required=True, help='Path to gff file')
-    renamegff_parser.add_argument('-o', '--output_gff', help='Path to the output file.')
-    renamegff_parser.add_argument('-r', '--rename_file', help='rename file, #q_id r_id ')
-    return renamegff_parser
+    gffreorder_parser = parser.add_parser('gffreorder', help='Reorder gff file according to ref')
+
+    gffreorder_parser.add_argument('-g', '--input_gff', required=True, help='Path to gff file')
+    gffreorder_parser.add_argument('-o', '--output_gff', help='Path to the output file.')
+    gffreorder_parser.add_argument('-r', '--rename_file', help='rename file, #q_id r_id ')
+    
+    return gffreorder_parser
 
 def run(args):
     update_gff(args.input_gff, args.rename_file, args.output_gff)
