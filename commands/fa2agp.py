@@ -92,7 +92,7 @@ def setup_parser(parser):
     fa2agp_parser.add_argument('-o', '--output_file', help='Path to the output agp file. [sdout]')
     fa2agp_parser.add_argument('-m', '--min_gap_size', type=int, default=10, help='Minimum length of gap to split contigs. [10]')
     fa2agp_parser.add_argument('-n', '--gap_identifer', help='Gap identifer. [N|n]')
-    fa2agp_parser.add_argument('-p', '--contig_prefix', type=str, default="contig_", help='Prefix for new contig names. [contig]')
+    fa2agp_parser.add_argument('-p', '--contig_prefix', type=str, default="contig_", help='Prefix for new contig names. [contig_]')
 
     return fa2agp_parser
 
