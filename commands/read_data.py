@@ -57,7 +57,7 @@ def write_output(content, filename=None):
     if filename:
         with open(filename, 'w') as file:
             file.writelines(content if isinstance(content, list) else [content])
-        print(f"内容已写入文件: {filename}")
+        # print(f"内容已写入文件: {filename}")
     else:
         # 如果 filename 为 None，输出到标准输出
         if isinstance(content, list):

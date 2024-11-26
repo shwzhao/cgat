@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
-from commands import gff2idmap, gffreorder, longestSeq, fa2agp, parse_orthofinder, taxonomy
+from commands import gff2idmap, gffreorder, longestSeq, fa2agp, parse_orthofinder_test, taxonomy
 
 def main():
     parser = argparse.ArgumentParser(prog='cgat', description='Comparative genomics analysis toolkit')
@@ -12,7 +12,7 @@ def main():
     longestSeq.setup_parser(subparsers)
     fa2agp.setup_parser(subparsers)
     taxonomy.setup_parser(subparsers)
-    parse_orthofinder.setup_parser(subparsers)
+    parse_orthofinder_test.setup_parser(subparsers)
 
 
     args = parser.parse_args()
@@ -29,7 +29,7 @@ def main():
         elif args.subcommand == 'taxonomy':
             taxonomy.run(args)
         elif args.subcommand == 'parse_orthofinder':
-            parse_orthofinder.run(args)
+            parse_orthofinder_test.run(args)
         else:
             parser.print_help()
     else:
